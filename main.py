@@ -422,4 +422,4 @@ async def commands(ctx):
 
 
 print("Bot Online")
-bot.run('ODI3NDIwOTE2NjUyNDQxNjEw.YGaxxw.iDw7kweLdr3tMFrFpSUixzR_hSU')
+bot.run('Discord bot token here')
