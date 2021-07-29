@@ -16,4 +16,4 @@ S9 - Server 9
 
 Planned:
 
-| >dxp | >bizlist [id] | >find [id] [item] |
+| >dxp | >bizlist [id] | >find [id] [item] | suggest more to Alpa#0223 |
