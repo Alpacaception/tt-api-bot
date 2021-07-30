@@ -1,19 +1,20 @@
-Discord bot for transport tycoon, current commands are:
+# Discord bot for transport tycoon
 
-| >skills [id] | >biz [id] | >company [id] | >id [discord id] | >wealth [server] [id] | >inv [id] (only somewhat works) | >commands |
+## Commands
 
-With the wealth command the user must be online and you must specify the server from the list below:
+[x] >skills [id] | Gets the player's skills
+[x] >biz [id] | Gets the player's business stats
+[x] >company [id] | Gets information about the player's company including vouchers
+[x] >id [discord ID] | Converts discord ID to ingame ID for use in other commands
+[x] >bal [server] [id] | Gets the player's ingame balance
+[x] >inv [id] | Dumps a json output of the player's inventory
+[x] >commands | Gets a list of commands
+[] >dxp
+[] >bizlist [id]
+[] >find [id] [item] 
 
-OS - Server 1
-S2 - Server 2
-S3 - Server 3
-S4 - Server 4
-S5 - Server 5
-S6 - Server 6
-S7 - Server 7
-S8 - Server 8
-S9 - Server 9
+### With the >bal command the user must be online and you must specify the server from the list below:
 
-Planned:
+## Server list for use with wealth command
 
-| >dxp | >bizlist [id] | >find [id] [item] | suggest more to Alpa#0223 |
+OS - Server 1 | S2 - Server 2 | S3 - Server 3 | S4 - Server 4 | S5 - Server 5 | S6 - Server 6 | S7 - Server 7 | S8 - Server 8 | S9 - Server 9
