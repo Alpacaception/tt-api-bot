@@ -9,6 +9,7 @@
 - [x] >bal [server] [id] | Gets the player's ingame balance
 - [x] >inv [id] | Dumps a json output of the player's inventory
 - [x] >commands | Gets a list of commands
+- [x] >github | Gets the github link for the bot (may not be fully updated)
 - [ ] >dxp
 - [ ] >bizlist [id]
 - [ ] >find [id] [item]
