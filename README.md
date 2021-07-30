@@ -9,11 +9,11 @@
 - [x] >bal [server] [id] | Gets the player's ingame balance
 - [x] >inv [id] | Dumps a json output of the player's inventory
 - [x] >commands | Gets a list of commands
-- [] >dxp
-- [] >bizlist [id]
-- [] >find [id] [item]
+- [ ] >dxp
+- [ ] >bizlist [id]
+- [ ] >find [id] [item]
 
-### With the >bal command the user must be online and you must specify the server from the list below:
+With the >bal command the user must be online and you must specify the server from the list below:
 
 ## Server list for use with wealth command
 
