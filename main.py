@@ -6,12 +6,16 @@ from discord.ext import commands, tasks
 from discord import client
 from discord import Member
 import discord
-import re
-
-key = "Your key here"
+import asyncio
+import time
 
 bot = commands.Bot(command_prefix='>')
+key = "api key here"
+token = 'token here'
 
+'''
+Skills
+'''
 @bot.command()
 async def skills(ctx, vrpid):
     exp = 0
@@ -23,106 +27,19 @@ async def skills(ctx, vrpid):
 
     player = player.json()
 
+    skillRun = 0
+
     em = discord.Embed(title= f"{vrpid}'s Skills", color=discord.Color.red())
-    # Get Hunting LVL
-    exp = player['data'].get('gaptitudes_v').get('hunting').get('skill')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Hunting", value=f"Level {exp}", inline=True)
 
-    # Get Biz LVL
-    exp = player['data'].get('gaptitudes_v').get('business').get('business')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Business", value=f"Level {exp}", inline=True)
+    skill1 = ['hunting', 'business', 'physical', 'ems', 'ems', 'trucking', 'trucking', 'trucking', 'trucking', 'casino', 'train', 'train', 'player', 'player', 'farming', 'farming', 'farming', 'piloting', 'piloting', 'piloting']
+    skill2 = ['skill', 'business', 'strength', 'ems', 'fire', 'postop', 'trucking', 'garbage', 'mechanic', 'casino', 'bus', 'train', 'player', 'racing', 'farming', 'fishing', 'mining', 'piloting', 'cargos', 'heli']
+    skill3 = ['Hunting', 'Business', 'Strength', 'EMS', 'Fire Fighter', 'Post Op', 'Trucking', 'Garbage', 'Mechanic', 'Gambling', 'Bus Driver', 'Conductor', 'Player', 'Racing', 'Farming', 'Fishing', 'Mining', 'Airline Pilot', 'Cargo Pilot', 'Heli Pilot']
 
-    # Get Strength
-    exp = player['data'].get('gaptitudes_v').get('physical').get('strength')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Strength", value=f"Level {exp}", inline=True)
-
-    # Get EMS
-    exp = player['data'].get('gaptitudes_v').get('ems').get('ems')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="EMS", value=f"Level {exp}", inline=True)
-
-    # Get Firefighter
-    exp = player['data'].get('gaptitudes_v').get('ems').get('fire')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Fire Fighter", value=f"Level {exp}", inline=True)
-
-    # Get post op
-    exp = player['data'].get('gaptitudes_v').get('trucking').get('postop')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Post Op", value=f"Level {exp}", inline=True)
-
-    # Get trucking
-    exp = player['data'].get('gaptitudes_v').get('trucking').get('trucking')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Trucking", value=f"Level {exp}", inline=True)
-
-    # Get garbage
-    exp = player['data'].get('gaptitudes_v').get('trucking').get('garbage')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Garbage", value=f"Level {exp}", inline=True)
-
-    # Get mechanic
-    exp = player['data'].get('gaptitudes_v').get('trucking').get('mechanic')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Mechanic", value=f"Level {exp}", inline=True)
-
-    # Get gambling
-    exp = player['data'].get('gaptitudes_v').get('casino').get('casino')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Gambling", value=f"Level {exp}", inline=True)
-
-    # get bus
-    exp = player['data'].get('gaptitudes_v').get('train').get('bus')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Bus Driver", value=f"Level {exp}", inline=True)
-
-    # Get train
-    exp = player['data'].get('gaptitudes_v').get('train').get('train')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Conductor", value=f"Level {exp}", inline=True)
-
-    # Get player
-    exp = player['data'].get('gaptitudes_v').get('player').get('player')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Player", value=f"Level {exp}", inline=True)
-
-    # Get racing
-    exp = player['data'].get('gaptitudes_v').get('player').get('racing')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Racing", value=f"Level {exp}", inline=True)
-
-    # Get farming
-    exp = player['data'].get('gaptitudes_v').get('farming').get('farming')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Farming", value=f"Level {exp}", inline=True)
-
-    # Get fishing
-    exp = player['data'].get('gaptitudes_v').get('farming').get('fishing')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Fishing", value=f"Level {exp}", inline=True)
-
-    # Get mining
-    exp = player['data'].get('gaptitudes_v').get('farming').get('mining')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Mining", value=f"Level {exp}", inline=True)
-
-    # Get flying commercial
-    exp = player['data'].get('gaptitudes_v').get('piloting').get('piloting')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Airline Pilot", value=f"Level {exp}", inline=True)
-
-    # Get flying cargo
-    exp = player['data'].get('gaptitudes_v').get('piloting').get('cargos')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Cargo Pilot", value=f"Level {exp}", inline=True)
-
-    # Get heli
-    exp = player['data'].get('gaptitudes_v').get('piloting').get('heli')
-    exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
-    em.add_field(name="Heli Pilot", value=f"Level {exp}", inline=True)
+    for i in range(0,19):
+        exp = player['data'].get('gaptitudes_v').get(skill1[skillRun]).get(skill2[skillRun])
+        exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
+        em.add_field(name=skill3[skillRun], value=f"Level {exp}", inline=True)
+        skillRun += 1
 
     exp = player['data'].get('gaptitudes_v').get('piloting').get('heli')
     exp = math.trunc((math.sqrt(1 + 8 * exp / 5) - 1) / 2)
@@ -142,6 +59,7 @@ async def company(ctx, vrpid):
         })
 
     player = player.json()
+
     em = discord.Embed(title= f"{vrpid}'s Company Info", color=discord.Color.red())
 
     company = player['data'].get('groups')
@@ -230,24 +148,24 @@ async def company(ctx, vrpid):
             manager = True
 
         try:
-            fVoucher = player['data'].get('inventory').get('stolen_money').get('amount')
+            fVoucher = player['data'].get('inventory').get('collinsco_cab_voucher').get('amount')
         except:
-            stolen = 0
+            fVoucher = 0
 
         try:
-            cVoucher = player['data'].get('inventory').get('pigs_voucher').get('amount')
+            cVoucher = player['data'].get('inventory').get('collinsco_plane_voucher').get('amount')
         except:
-            voucher = 0
+            cVoucher = 0
         try:
-            tVoucher = player['data'].get('inventory').get('pigs_voucher').get('amount')
+            tVoucher = player['data'].get('inventory').get('collinsco_train_voucher').get('amount')
         except:
-            voucher = 0
+            tVoucher = 0
         try:
-            sVoucher = player['data'].get('inventory').get('pigs_voucher').get('amount')
+            sVoucher = player['data'].get('inventory').get('collinsco_boat_voucher').get('amount')
         except:
-            voucher = 0
+            sVoucher = 0
 
-        voucherData = f"\nCabbie Vouchers: {stolen}\nFlyie Vouchers: {voucher}"
+        voucherData = f"\nCabbie Vouchers: {cVoucher}\nFlyie Vouchers: {fVoucher}\nTrainy Vouchers: {tVoucher}\nSeaman Vouchers: {sVoucher}\n\nTotal Vouchers: {sVoucher+tVoucher+fVoucher+cVoucher}"
 
 
     em.add_field(name="Company", value=compname, inline=False)
@@ -264,7 +182,9 @@ bizName = ['Wenger Institute', 'La Vaca Loco', 'Vespucci Movie Masks', 'Sandy Sh
 
 bizCost = [15000, 150000, 150000, 250000, 250000, 250000, 300000, 300000, 300000, 350000, 500000, 500000, 750000, 750000, 750000, 950000, 1500000, 1500000, 1500000, 2500000, 3000000, 3500000, 4000000, 4000000, 4500000, 4500000, 5000000, 5000000, 6000000, 7500000, 8000000, 8000000, 9000000, 11000000, 12500000, 15000000, 17000000, 17500000, 18000000, 18000000, 20000000, 25000000, 30000000, 32000000, 35000000, 35000000, 35000000, 37000000, 47000000, 60000000, 65000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 80000000, 8000000, 120000000, 125000000, 125000000, 125000000, 150000000, 200000000, 250000000, 350000000, 350000000, 500000000, 550000000, 600000000, 750000000]
 
-bizBonus = [2590, 13604, 13604, 19990, 19990, 19990, 22963, 22963, 22963, 25831, 33967, 33974, 46515, 46515, 46515, 55935, 80078, 80078, 80078, 120056, 138848, 157069, 174818, 174818, 192169, 192169, 209176, 209176, 242317, 242317, 290267, 305862, 305862, 336557, 396262, 439813, 510497, 565612, 579217, 592757, 592757, 646313, 776557, 902575, 952001, 1025219, 1025219, 1025219, 1073468, 1308944, 1603569, 1714115, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2861836, 2961540, 2961540, 2961540, 3451593, 4397437, 5308689, 7057315, 7057315, 0, 10359526, 11155977, 13493131]
+bizBonus = [2590, 13604, 13604, 19990, 19990, 19990, 22963, 22963, 22963, 25831, 33974, 33974, 46515, 46515, 46515, 55935, 80078, 80078, 80078, 120056, 138848, 157069, 174818, 174818, 192169, 192169, 209176, 209176, 242317, 242317, 290267, 305862, 305862, 336557, 396262, 439813, 510497, 565612, 579217, 592757, 592757, 646313, 776557, 902575, 952001, 1025219, 1025219, 1025219, 1073468, 1308944, 1603569, 1714115, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2038284, 2861836, 2961540, 2961540, 2961540, 3451593, 4397437, 5308689, 7057315, 7057315, 0, 10359526, 11155977, 13493131]
+
+# bizBonus = [2590, 13604, 13604, 19990, 19990, 19990, 22963, 22963, 22963, 25831, 33974, 33974, 46515, 46515, 46515, 55935, 80078, 80078, 80078]
 
 bizRun = 0
 
@@ -278,6 +198,7 @@ async def biz(ctx, vrpid):
     tyStorage = 0
     ltWeld = 0
     bizSpent = 0
+    nextBiz2 = ''
     bizRun = 0
     biz = requests.get(f'https://tycoon-w8r4q4.users.cfx.re/status/getuserbiz/{vrpid}',
         headers={
@@ -289,20 +210,28 @@ async def biz(ctx, vrpid):
     em = discord.Embed(title= f"{vrpid}'s Business Info", color=discord.Color.red())
 
     for i in range(0,78):
+        upgraded = 0
         lvl = (biz['businesses'].get(bizList[bizRun]))
-        print(f"{bizName[bizRun]}: Level {lvl}")
         if lvl == None:
             lvl = 0
-            if nextBiz == "" or nextBiz == "N/A":
+            if nextBiz == "":
                 nextBiz = bizName[bizRun]
             bizToMax = bizToMax + bizCost[bizRun]
         bizSpent = lvl*bizCost[bizRun] + bizSpent
         bizToMax2 = (100-lvl)*bizCost[bizRun] + bizToMax2
 
+        if lvl != 100 and bizList[bizRun] != "biz_pacific_standard" and nextBiz2 == '':
+            nextBiz2 = bizName[bizRun]
+
+        if nextBiz == "":
+            bizBuy = nextBiz2
+        elif nextBiz != "":
+            bizBuy = nextBiz
+
         if lvl == 0:
             bizDaily = bizDaily + 0
         elif lvl > 0:
-            bizDaily = (bizBonus[bizRun] + (bizBonus[bizRun]*(lvl-1)*0.25)) + bizDaily
+            bizDaily = math.trunc((bizBonus[bizRun] + (bizBonus[bizRun]*(lvl-1)*0.25)) + bizDaily)
 
         if lvl > 0 and bizRun > 51 and bizRun < 62:
             tyStorage = tyStorage + (1840*lvl)
@@ -310,10 +239,6 @@ async def biz(ctx, vrpid):
         if lvl > 0 and bizRun == 48:
             ltWeld = lvl*57500
 
-        if nextBiz == "":
-            nextBiz = "N/A"
-        elif nextBiz == "N/A" and lvl < 100 and bizList[bizRun] != "biz_pacific_standard":
-            nextBiz = bizName[bizRun]
 
         bizRun += 1
 
@@ -323,15 +248,18 @@ async def biz(ctx, vrpid):
         bizDailyTax = math.trunc(bizDaily * 0.7)
 
     bizToMax2 -= 49500000000
+    bizDaily = bizDaily - (bizDaily*0.01)
+    bizDailyTax = bizDailyTax - (bizDailyTax*0.01)
 
     em.add_field(name="Total spent on businesses", value=f"${format(bizSpent, ',')}", inline=False)
     em.add_field(name="Money until all businesses are owned", value=f"${format(bizToMax, ',')}", inline=False)
     em.add_field(name="Money until all businesses are maxed", value=f"${format(bizToMax2, ',')}", inline=False)
     em.add_field(name="Business daily before tax", value=f"${format(bizDaily, ',')}", inline=False)
     em.add_field(name="Business Daily after tax", value=f"${format(bizDailyTax, ',')}", inline=False)
-    em.add_field(name="Next recommended business to purchase", value=nextBiz, inline=False)
+    em.add_field(name="Next recommended business to purchase", value=bizBuy, inline=False)
     em.add_field(name="Trainyard Storage", value=f"{format(tyStorage, ',')} Kg", inline=False)
     em.add_field(name="LT Weld Storage", value=f"{format(ltWeld, ',')} Kg", inline=False)
+    em.set_footer(text = "Calculations assume you are in a faction with 1% tax, all values taken from rockwell website so if something isn't correct it is probably not my fault")
 
     await ctx.send(embed = em)
 
@@ -350,28 +278,57 @@ async def id(ctx, snowflake):
 
 @bot.command()
 async def inv(ctx, vrpid):
-    invRun = 0
-    invL = ''
-    inv = requests.get(f'https://tycoon-w8r4q4.users.cfx.re/status/dataadv/{vrpid}',
+    dsid = requests.get(f'https://tycoon-2epova.users.cfx.re/status/dataadv/{vrpid}',
         headers={
-        "X-Tycoon-Key" : key
+        "X-Tycoon-Key" : "fz461IgfiQjE1BpHcxFqyPZajvDF6pq3mDnw0"
         })
 
-    inv = inv.json()
-    inv = inv['data'].get('inventory')
+    dsid = dsid.json()
+    dsid = dsid['data'].get('inventory')
 
-    print(inv)
-    await ctx.send(f"The inventory of {vrpid} has been sent to you via DMs!")
-    try:
-        await ctx.author.send(inv)
-    except:
-        await ctx.author.send("The requested inventory was too large to send! This will be fixed eventually.")
+    namelst = []
+    quantitylst = []
+
+    for key in dsid.keys():
+        subdict = dsid[key]
+        namelst.append(subdict["name"])
+        quantitylst.append(subdict["amount"])
+
+    invstr = ''
+    invtxt = ''
+    runi = 0
+    for i in range(len(namelst)):
+
+        invtxt = f"{namelst[runi]}: {quantitylst[runi]}\n" + invtxt
+        invstr = f"<p>{namelst[runi]}: {quantitylst[runi]}</p>" + invstr
+        runi += 1
+    reprun = 0
+    remove2 = ['</span>', '<span style="color:orange">', '<span style="color:tomato">', "<span type='train-train'/>", '<span style="color:limegreen">', "<span type='piloting-piloting'/>", "<span class='rainbow'>", "<span type='casino-casino'/>", "<span type='trucking-garbage'/>", "<span type='trucking-garbage'/>", "<span type='physical-strength'/>", "<span type='piloting-cargos'/>", "<span type='ems-fire'/>", "<span type='trucking-postop'/>", "<span type='piloting-heli'/>", "<span style='color:purple'/>", '<span style="color:gold">', "<span type='player-player'/>", "<span type='business-business'/>", "<span type='trucking-trucking'/>", "<span/>", "<span style='color:crimson' n='14333'>", "<span>"]
+    for i in range(len(remove2)):
+        invtxt = invtxt.replace(remove2[reprun], '')
+        reprun += 1
+    invstr = f"<h1><p>{vrpid}'s inventory </p></h1><h3>{invstr}</h3>"
+    with open ('out.txt', 'wb') as out:
+        out.write(invtxt.encode("utf-8"))
+    await ctx.send(f"The inventory of {vrpid} has been sent to you via DMs")
+    await ctx.author.send(file=discord.File('out.txt'))
+    '''
+    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    pdfkit.from_string(invstr, "out.pdf", configuration=config)
+    '''
+
+@bot.command()
+async def invpdf(ctx, vrpid):
+    await ctx.send(f"The inventory of {vrpid} has been sent to you via DMs")
+    await ctx.author.send("Coming soon")
+
+serverL = ['OS', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'SA']
+serverN = ['https://tycoon-w8r4q4.users.cfx.re/', 'https://tycoon-2epova.users.cfx.re/', 'https://tycoon-2epovd.users.cfx.re/', 'https://tycoon-wdrypd.users.cfx.re/', 'https://tycoon-njyvop.users.cfx.re/', 'https://tycoon-2r4588.users.cfx.re/', 'https://tycoon-npl5oy.users.cfx.re/', 'https://tycoon-2vzlde.users.cfx.re/', 'https://tycoon-wmapod.users.cfx.re/', 'N/A']
+ip = ''
 
 @bot.command()
 async def bal(ctx, server, vrpid):
-    serverL = ['OS', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'SA']
-    serverN = ['https://tycoon-w8r4q4.users.cfx.re/', 'https://tycoon-2epova.users.cfx.re/', 'https://tycoon-2epovd.users.cfx.re/', 'https://tycoon-wdrypd.users.cfx.re/', 'https://tycoon-njyvop.users.cfx.re/', 'https://tycoon-2r4588.users.cfx.re/', 'https://tycoon-npl5oy.users.cfx.re/', 'https://tycoon-2vzlde.users.cfx.re/', 'https://tycoon-wmapod.users.cfx.re/', 'N/A']
-    ip = ''
     balRun = 0
     while balRun < 10:
         if server.upper() == serverL[balRun]:
@@ -412,14 +369,112 @@ async def bal(ctx, server, vrpid):
 async def commands(ctx):
     em = discord.Embed(title= "Commands", color=discord.Color.red())
 
-    em.add_field(name="id", value="Usage: >id [discordID] | Example: >id 238771447290527745", inline=False)
-    em.add_field(name="skills", value="Usage: >skills [ingameID] | Example: >skills 256531", inline=False)
-    em.add_field(name="biz", value="Usage: >biz [ingameID] | Example: >biz 256531", inline=False)
-    em.add_field(name="company", value="Usage: >company [ingameID] | Example: >company 256531", inline=False)
-    em.add_field(name="bal", value="Usage: >bal [server] [ingameID] | Example: >bal OS 256531 | Requires player to be online!", inline=False)
+    em.add_field(name="Id", value="Usage: >id [discordID] | Example: >id 238771447290527745 | Converts discord ID to ingame ID for use in other commands", inline=False)
+    em.add_field(name="Skills", value="Usage: >skills [ingameID] | Example: >skills 256531 | Gets the player's skills", inline=False)
+    em.add_field(name="Biz", value="Usage: >biz [ingameID] | Example: >biz 256531 | Gets the player's business stats", inline=False)
+    em.add_field(name="Company", value="Usage: >company [ingameID] | Example: >company 256531 | Gets information about the player's company including vouchers", inline=False)
+    em.add_field(name="Bal", value="Usage: >bal [server] [ingameID] | Example: >bal OS 256531 | Gets the player's ingame balance, requires player to be online!", inline=False)
+    em.add_field(name="Github", value="Usage: >github | Example: >github | Gets the github link for the bot (may not be fully updated)", inline=False)
+    em.add_field(name="Dxp", value="Usage: >dxp | Example: >dxp | Gives or removes the DXP Pings role from you", inline=False)
+    em.add_field(name="Online", value="Usage: >online [ingameID] | Example: >online 256531 | Checks whether a user is online", inline=False)
 
     await ctx.send(embed = em)
 
+@bot.command()
+async def github(ctx):
+    await ctx.send("https://github.com/Alpacaception/tt-api-bot")
 
-print("Bot Online")
-bot.run('Discord bot token here')
+
+@bot.command()
+async def dxp(ctx):
+    user = ctx.message.author
+    role = discord.utils.get(user.guild.roles, name="DXP Pings")
+    if role in user.roles: #checks all roles the member has
+        await user.remove_roles(role) #removes the role
+        await ctx.send(f"Removed the DXP Pings role from **{ctx.author.name}**")
+    else:
+        await user.add_roles(role) #adds the role
+        await ctx.send(f"Given **{ctx.author.name}** the DXP Pings role")
+
+
+dxpSL = ['Server 1', 'Server 2', 'Server 3', 'Server 6', 'Server 7', 'Server 8', 'Server 9']
+dxpSI = ['https://tycoon-w8r4q4.users.cfx.re/', 'https://tycoon-2epova.users.cfx.re/', 'https://tycoon-2epovd.users.cfx.re/', 'https://tycoon-2r4588.users.cfx.re/', 'https://tycoon-npl5oy.users.cfx.re/', 'https://tycoon-2vzlde.users.cfx.re/', 'https://tycoon-wmapod.users.cfx.re/']
+
+@bot.command()
+async def online(ctx, vrpid):
+    onlineRun = 0
+    onlineRun2 = 0
+    player = False
+    await ctx.send(f"Looking for a player with the ID **{vrpid}**")
+    for e in range(7):
+        try:
+            onlineS = requests.get(f"{dxpSI[onlineRun]}status/widget/players.json")
+            onlineS = onlineS.json()
+            onlineA = onlineS.get('players')
+            playerCount = len(onlineA)
+            for p in range(playerCount):
+                if int(onlineA[onlineRun2][2]) == int(vrpid):
+                    await ctx.channel.purge(limit=1)
+                    plyr = onlineA[onlineRun2]
+                    em = discord.Embed(title= plyr[0], color=discord.Color.red())
+
+                    em.add_field(name="ID", value=plyr[2], inline=False)
+                    em.add_field(name="Server", value=dxpSL[onlineRun], inline=False)
+                    em.add_field(name="Job", value=plyr[5], inline=False)
+                    em.set_thumbnail(url=plyr[3])
+
+                    await ctx.send(embed = em)
+
+                    player = True
+
+                onlineRun2 += 1
+        except:
+            exception = True
+        onlineRun += 1
+    if player == False:
+        await ctx.channel.purge(limit=1)
+        await ctx.send(f"The player with the id **{vrpid}** is not online right now")
+
+@bot.event
+async def on_ready():
+    dxpRun = 0
+    dxpRunning = False
+    channel = bot.get_channel(870680099907862598) # If using the bot yourself change this to the channel you want the dxp to be printed to
+    channel2 = bot.get_channel(873010300104880198)
+    while True:
+        if dxpRun >= 7:
+            dxpRun = 0
+        for f in range(7):
+            try:
+                dxpS = requests.get(f"{dxpSI[dxpRun]}status/widget/players.json")
+                dxpS = dxpS.json()
+                dxpS = dxpS['server'].get('dxp')
+                if dxpS[0] != False:
+                    dxpRunning = True
+                    allowed_mentions = discord.AllowedMentions(everyone=True)
+                    sec = math.trunc((dxpS[2]+dxpS[3])/1000)
+                    ty_res = time.gmtime(sec)
+                    res = time.strftime("%H Hours %M Minutes and %S Seconds",ty_res)
+                    if dxpRunning == True:
+                        await channel.send(f'There is currently DXP on {dxpSL[dxpRun]} courtesy of {dxpS[1]} for another {res} @here', allowed_mentions=allowed_mentions)
+                        await channel2.send(f'There is currently DXP on {dxpSL[dxpRun]} courtesy of {dxpS[1]} for another {res}')
+                    await asyncio.sleep(sec)
+                    time.sleep(5)
+                    dxpRunning = False
+
+            except:
+                exception = True
+            dxpRun += 1
+
+        await asyncio.sleep(300)
+
+
+@bot.command()
+async def test(ctx):
+    await ctx.send("test")
+    await asyncio.sleep(1)
+print("Running")
+#tyImLUKQQhiLzEglkpmgLQJI5GjPwDz5CTVGV
+
+
+bot.run(token)
