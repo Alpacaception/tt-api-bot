@@ -551,15 +551,11 @@ if True == True:
         await ctx.send(f"Looking for a player with the ID **{vrpid}**")
         for e in serverL:
             try:
-                if debugging == True:
-                    await bot.get_channel(879489727177297940).send(f"Looking on {serverL[onlineRun]}")
                 onlineS = requests.get(f"{serverN[onlineRun]}status/widget/players.json", timeout=10)
                 onlineS = onlineS.json()
                 onlineA = onlineS.get('players')
                 playerCount = len(onlineA)
                 for p in range(playerCount):
-                    if debugging == True:
-                        await bot.get_channel(879489727177297940).send(f"{onlineA[onlineRun2]}")
                     if int(onlineA[onlineRun2][2]) == int(vrpid):
                         await ctx.channel.purge(limit=1)
                         plyr = onlineA[onlineRun2]
